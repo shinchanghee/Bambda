@@ -1,0 +1,31 @@
+service: bambda- # Func Name
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-northeast-2
+  memorySize: 256
+  stage: dev
+  timeout: 15
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - lambda:InvokeFunction
+            - logs:*
+          Resource: "*"
+
+functions:
+  Beventwriter:
+    handler: bambda.handler
+
+resources:
+  Resources:
+    BambdaeventwriterLog:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: /aws/lambda/ # service name
+        RetentionInDays: 7
